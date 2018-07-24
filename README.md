@@ -28,8 +28,8 @@ A user opens the web app to chat with his/her friends.
 * Mongodb : to store data
 * Express: handle backend stuff
 * Express-session: to handle user session
-* Passport:  authentication for username and password
-
+* Dotenv: store keys
+* Bcrypt: Hash password
 
 ## Models
 * Users model

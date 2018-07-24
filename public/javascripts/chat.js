@@ -21,6 +21,10 @@ message.addEventListener('keypress', function(){
     socket.emit('typing', username.value);
 })
 
+message.addEventListener('keyup', function () {
+    socket.emit('not-typing');
+})
+
 //listen for events
 socket.on('chat', function(data){
     feedback.innerHTML = '';
@@ -29,4 +33,8 @@ socket.on('chat', function(data){
 
 socket.on('typing', function(data){
     feedback.innerHTML = '<p><em>' + data + ' is typing a message...' + '</em></p>';
+})
+
+socket.on('not-typing', function(data){
+    feedback.innerHTML = '';
 })

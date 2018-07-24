@@ -4,11 +4,31 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var socket = require('socket.io');
+var session = require('express-session');
+require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+//connect mongoose database
+var mongoose = require('mongoose');
+mongoose.connect(process.env.DB_PATH);
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+  console.log('we are connected!')
+});
+
 var app = express();
+
+app.use(session({
+  secret: 'secret-unique-code',
+  cookie: { maxAge: 3600000 },
+  resave: true,
+  saveUninitialized: true
+}));
+
 var server = app.listen(3000, function(){
   console.log('listening on port 3000')
 })
@@ -29,7 +49,11 @@ io.on('connection', function(socket){
   socket.on('typing', function(data){
     socket.broadcast.emit('typing', data);
     console.log(data)
-  })
+  });
+
+  socket.on('not-typing', function(){
+    socket.broadcast.emit('not-typing');
+  });
 })
 
 // view engine setup
