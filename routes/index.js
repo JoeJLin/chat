@@ -4,6 +4,7 @@ var router = express.Router();
 
 router.use(function (req, res, next) {
   res.locals.title = "CHAT";
+  res.locals.username = req.session.username;
   res.locals.currentUserId = req.session.userId;
   next();
 });
@@ -31,13 +32,13 @@ router.post('/login', (req, res, next) => {
 
       return next(NextError);
     }
-    /* eslint-disable-next-line no-underscore-dangle */
+
     req.session.userId = user._id;
-    // console.log(req.sessionID)
-    console.log('success')
-    return res.redirect('/chats/chat');
+    req.session.username = user.username;
+
+    console.log(res.locals)
+    return res.redirect('/');
   });
-  console.log('logging in!');
 });
 
 // logout

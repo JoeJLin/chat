@@ -1,3 +1,21 @@
+{{# if currentUserId}}
+
+<div class="container">
+    <div class="has-text-centered" id="welcome">
+        <h1 class="title is-1">Welcome</h1>
+        <p>Good to see you here</p>
+        <a class="button is-medium">Let's Chat</a>
+    </div>
+    
+</div>
+
+
+
+
+
+
+
+{{else}}
     <div class="columns is-mobile">
         <div class="card column is-one-quarter-desktop is-one-half-mobile is-one-third-tablet is-narrow" id="loginBox">
             <div class="card-content">
@@ -32,3 +50,4 @@
             </footer>
         </div>
     </div>
+{{/if}}
