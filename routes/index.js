@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 
 //get login page
 router.get('/login', (req, res) => {
-  res.render('login');
+  res.render('users/login');
 });
 
 // POST Login
@@ -33,9 +33,9 @@ router.post('/login', (req, res, next) => {
     }
     /* eslint-disable-next-line no-underscore-dangle */
     req.session.userId = user._id;
-    console.log(req.session)
+    // console.log(req.sessionID)
     console.log('success')
-    return res.redirect('/');
+    return res.redirect('/chats/chat');
   });
   console.log('logging in!');
 });
@@ -49,6 +49,10 @@ router.get('/logout', (req, res, next) => {
     });
   }
   return res.redirect('/login');
+});
+
+router.get('/create', function (req, res, next) {
+  res.render('users/create');
 });
 
 module.exports = router;

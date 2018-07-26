@@ -9,6 +9,7 @@ require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var chatsRouter = require('./routes/chats');
 
 //connect mongoose database
 var mongoose = require('mongoose');
@@ -38,6 +39,7 @@ var io = socket(server);
 
 io.on('connection', function(socket){
   console.log('connected socket');
+  // console.log(socket.request)
   console.log(socket.id)
 
   //handle chat event
@@ -51,9 +53,6 @@ io.on('connection', function(socket){
     console.log(data)
   });
 
-  socket.on('not-typing', function(){
-    socket.broadcast.emit('not-typing');
-  });
 })
 
 // view engine setup
@@ -68,6 +67,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/chats', chatsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -8,7 +8,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/create', function (req, res, next) {
-  res.render('users/create');
+  res.render('create');
+});
+
+router.get('/login', (req, res) =>{
+  res.render('login');
 });
 
 //create new user
@@ -20,8 +24,12 @@ router.post('/', (req, res) => {
   });
   user.save(function (err, user) {
     if (err) console.log(err);
-    return res.redirect('/');
+    return res.redirect('./');
   });
 })
+
+// router.get('/users/create', (req, res) => {
+//   res.render('/create');
+// })
 
 module.exports = router;

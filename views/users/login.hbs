@@ -1,26 +1,8 @@
-{{!-- <div>
-    <form action="/users" method="post">
-        <legend>New User</legend>
-
-        <div class="field">
-            <label for="user-username" class="label">Username</label>
-            <input type="text" name="username" class="input" id="user-username" placeholder="Username">
-            <label for="user-password" class="label">Password</label>
-            <input type="password" name="password" class="input" id="user-password" placeholder="Password">
-        </div>
-
-        <div>
-            <button type="submit" class="button is-link">Submit</button>
-        </div>
-    </form>
-</div> --}}
-
-
 <div class="columns is-mobile">
     <div class="card column is-one-quarter-desktop is-one-half-mobile is-one-third-tablet is-narrow" id="loginBox">
         <div class="card-content">
-            <form action="/users" method="post">
-                <div class="title is-4 has-text-centered">New User</div>
+            <form action="/login" method="post">
+                <div class="title is-4 has-text-centered">Login</div>
                 <div class="field">
                     <label for="user-username" class="label">Username</label>
                     <div class="control">
@@ -35,7 +17,7 @@
                 </div>
                 <div class="field is-grouped is-grouped-right">
                     <div class="control">
-                        <button type="submit" class="button is-primary">Sign Up</button>
+                        <button type="submit" class="button is-primary">Sign In</button>
                     </div>
                 </div>
             </form>
@@ -43,7 +25,8 @@
         <footer class="card-footer">
             <p class="card-footer-item">
                 <span>
-                     By clicking “Sign up for Chat, you agree to our terms of service and privacy statement.
+                    Sign Up For
+                    <a href="/create">Chat</a>
                 </span>
             </p>
         </footer>
