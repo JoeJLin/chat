@@ -7,14 +7,14 @@
     <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
-  <body>
+  <body id="particles-js">
 
     <nav class="navbar" id="navbar">
       <div class="container">
         {{!-- navbar-brand mobile size --}}
         <div class="navbar-brand">
           <a class="navbar-item" href='/'>
-            <h1 class="title is-5">LOGO</h1>
+            <h2 class="title is-5">LOGO</h2>
           </a>
           <span class="navbar-burger burger" data-target="navMenu">
             {{# if currentUserId}}
@@ -69,9 +69,14 @@
         </div>
       </div>
     </nav>
-    
+    <div id="particles-js">
+
     {{{body}}}
+    </div>
+
     <script src='/javascripts/chat.js'></script>
     <script src='/javascripts/index.js'></script>
+    <script type="text/javascript" src="/javascripts/particles.min.js"></script>
+    <script type="text/javascript" src="/javascripts/particlesjs-config.json"></script> 
   </body>
 </html>

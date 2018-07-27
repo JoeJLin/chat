@@ -37,7 +37,7 @@ router.post('/login', (req, res, next) => {
     req.session.username = user.username;
 
     console.log(res.locals)
-    return res.redirect('/');
+    return res.redirect('/chats/chat');
   });
 });
 
@@ -49,7 +49,7 @@ router.get('/logout', (req, res, next) => {
       return next();
     });
   }
-  return res.redirect('/login');
+  return res.redirect('/');
 });
 
 router.get('/create', function (req, res, next) {
