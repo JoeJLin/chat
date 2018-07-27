@@ -32,6 +32,7 @@ html, body{
   left: 50%;
   top: 35%;
   transform: translate(-50%, -50%);
+  opacity: .9;
 }
 
 a.navbar-item:hover{
@@ -40,15 +41,15 @@ a.navbar-item:hover{
 }
 
 #welcome{
-  color: white;
+  color: rgb(229, 229, 229);
   position: absolute;
   left: 50%;
-  top: 40%;
+  top: 45%;
   transform: translate(-50%, -50%);
 }
 
 #welcome h1{
-  color: white;
+  color: rgb(229, 229, 229);
 }
 
 #chat{
@@ -60,4 +61,32 @@ a.navbar-item:hover{
 
 #particles-js canvas{
   height: 95% !important;
+}
+
+.dropdown-menu{
+  opacity: .9;
+}
+
+.navbar-item .title{
+  color: rgb(229, 229, 229);
+}
+
+.dropdown-trigger .icon{
+  color: rgb(229,229,229);
+}
+
+.dropdown-trigger .icon:hover{
+  border-bottom: 2px solid;
+}
+
+#startButton{
+  margin-top: 30px;
+}
+
+.title.is-1 {
+  font-size: 3.5rem;
+}
+
+#welcomeContent{
+  font-size: 1rem;
 }

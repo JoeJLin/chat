@@ -37,7 +37,7 @@ router.post('/login', (req, res, next) => {
     req.session.username = user.username;
 
     console.log(res.locals)
-    return res.redirect('/chats/chat');
+    return res.redirect('/');
   });
 });
 

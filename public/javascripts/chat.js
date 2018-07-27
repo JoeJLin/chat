@@ -27,7 +27,9 @@ message.addEventListener('keypress', function(e){
 })
 
 message.addEventListener('keypress', function(){
-    socket.emit('typing', username.value);
+    if(message.value.length != 0){
+        socket.emit('typing', username.value);
+    }
 })
 
 
