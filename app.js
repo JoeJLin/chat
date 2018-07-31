@@ -13,12 +13,8 @@ var chatsRouter = require('./routes/chats');
 
 //connect mongoose database
 var mongoose = require('mongoose');
-mongoose.connect(process.env.DB_PATH);
-
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-  console.log('we are connected!')
+mongoose.connect(process.env.DB_PATH, () =>{
+  console.log('connected to db');
 });
 
 var app = express();
@@ -38,21 +34,7 @@ var server = app.listen(3000, function(){
 var io = socket(server);
 
 io.on('connection', function(socket){
-  console.log('connected socket');
-  // console.log(socket.request)
-  console.log(socket.id)
-
-  //handle chat event
-  socket.on('chat', function(data){
-    io.sockets.emit('chat', data)
-    console.log(data);
-  });
-
-  socket.on('typing', function(data){
-    socket.broadcast.emit('typing', data);
-    console.log(data)
-  });
-
+  require('./sockets/server.js')(io, socket);
 })
 
 // view engine setup

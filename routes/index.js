@@ -24,6 +24,7 @@ router.post('/login', (req, res, next) => {
   // req.body is the body of the login.hbs
   // req.body.username and password must be matched with the names in the login.hbs
   User.authenticate(req.body.username, req.body.password, (err, user) => {
+    console.log(req.body)
     // if the user's password or username is incorrect
     if (err || !user) {
       let NextError = new Error('Username or Password incorrect');
@@ -36,7 +37,7 @@ router.post('/login', (req, res, next) => {
     req.session.userId = user._id;
     req.session.username = user.username;
 
-    console.log(res.locals)
+    
     return res.redirect('/');
   });
 });

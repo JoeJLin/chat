@@ -1,22 +1,51 @@
-<div class="container is-desktop" id="chat">
-    <div class="textarea is-primary" id="chat-window">
+<div style="display:none" id="username" value="{{user.username}}"></div>
+
+<div class="friendSideBar">
+    <form action="/chats/chat/add" method="GET">
+        <div class="field">
+            <div class="control">
+                <input class="input is-black" type="text" placeholder="Friend Name" id="friendName" name="friendName">
+            </div>
+        </div>
+        <div class="field is-grouped is-grouped-right">
+            <div class="control">
+                <button type="submit" class="button is-white is-outlined" id="addFriend">Add</button>
+            </div>
+        </div>
+    </form>
+    
+    <div class="friendList">
+        <ul>
+             {{#each user.friendList as | friend |}} 
+                <li>{{this.username}}</li>
+             {{/each}}
+        </ul>
+    </div>
+</div>
+
+<div class="is-desktop" id="chat">
+    <h1 class="title is-3" id="globalTitle">Global Chat</h1>
+    <div class="is-primary" id="chat-window">
         <div id="output"></div>
         <div id="feedback"></div>
     </div>
-    <div class="field">
+    {{!-- <div class="field">
         <div class="control">
             <input class="input is-primary" type="text" placeholder="Name" id="username">
         </div>
-    </div>
+    </div> --}}
+    
+</div>
+
+<div id="messageDiv" class="container">
     <div class="field">
         <div class="control">
-            {{!-- <input class="input is-primary" type="text" placeholder="Text" id="message"> --}}
-            <textarea class="textarea is-primary" placeholder="Text" id="message"></textarea>
+            <textarea class="textarea is-black" placeholder="Please Enter Text!" id="message"></textarea>
         </div>
     </div>
     <div class="field is-grouped is-grouped-right">
         <div class="control">
-            <button type="submit" class="button is-primary" id="send">Submit</button>
+            <button class="button is-white is-outlined" id="send">Send</button>
         </div>
     </div>
 </div>

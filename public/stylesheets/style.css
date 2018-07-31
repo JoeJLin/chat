@@ -55,12 +55,13 @@ a.navbar-item:hover{
 #chat{
   position: absolute;
   left: 50%;
-  top: 40%;
+  top: 30%;
+  width: 50%;
   transform: translate(-50%, -50%);
 }
 
 #particles-js canvas{
-  height: 95% !important;
+  height: 90% !important;
 }
 
 .dropdown-menu{
@@ -89,4 +90,53 @@ a.navbar-item:hover{
 
 #welcomeContent{
   font-size: 1rem;
+}
+
+#chat-window{
+  height: 250px;
+  width: 200px;
+  overflow: auto;
+}
+
+#messageDiv{
+  position: absolute;
+  left: 50%;
+  top: 80%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+}
+
+.textMessage{
+  color: rgb(229, 229, 229);
+  border: 2px solid rgb(229, 229, 229);
+  padding: 5px;
+  border-radius: 5px;
+  overflow: auto;
+  height: 50px;
+  width: 200px;
+  margin-bottom: 5px;
+}
+
+.textMessage strong{
+  color: rgb(229, 229, 229);
+}
+
+#globalTitle{
+  color: rgb(229, 229, 229);
+  text-align: center;
+}
+
+#feedback{
+  color: rgb(229, 229, 229);
+}
+
+.friendSideBar {
+  height: 500px;
+  width: 200px;
+  position: absolute;
+  border: 2px solid rgb(229, 229, 229);
+}
+
+.friendList{
+  
 }

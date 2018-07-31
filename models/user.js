@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const Schema = mongoose.Schema;
+
 //user schema
 const UserSchema = mongoose.Schema({
     username: {
@@ -10,7 +12,16 @@ const UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    friendList: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    }],
+    isOnline: {
+        type: Boolean,
+        default: false,
+    },
+
 });
 
 //add salt
