@@ -33,8 +33,10 @@ var server = app.listen(3000, function(){
 //setup socket
 var io = socket(server);
 
-io.on('connection', function(socket){
-  require('./sockets/server.js')(io, socket);
+
+const onlineUsers = {};
+io.on('connection', function (socket) {
+  require('./sockets/server.js')(io, socket, onlineUsers);
 })
 
 // view engine setup
@@ -46,6 +48,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use((req, res, next) => { res.locals['socketio'] = io; next(); });
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

@@ -3,7 +3,6 @@ var router = express.Router();
 const User = require('../models/user');
 const auth = require('./helpers/auth');
 
-
 router.get('/chat', auth.requireLogin, (req, res, next) => {
     User.findById(req.session.userId).populate('friendList').exec((err, user) => {
         if (err) { console.error(err); }
@@ -30,17 +29,24 @@ router.get('/chat/add', auth.requireLogin, (req, res) => {
             }
         })
         .then((friend) => {
-            console.log('current user !!!!' + loggedIn)
-            console.log('friend user !!!!' + friend)
-            if (loggedIn.friendList.indexOf(friend._id) != -1){
+            // console.log('current user !!!!' + loggedIn)
+            // console.log('friend user !!!!' + friend)
+            if (loggedIn.friendList.findIndex(i => i.username == friend.username) != -1){
                 throw 'FRIEND FOUND IN THE LIST';
-            } else {
+            } else if (loggedIn.friendList.findIndex(i => i.username == friend.username) == -1) {
                 console.log('FRIEND NOT FOUND IN THE LIST');
-                return User.findByIdAndUpdate(loggedIn._id, { '$push': { friendList: friend._id}});
+                return User.findByIdAndUpdate(loggedIn._id, { '$push': { friendList: friend._id } })
             }
         })
-        .then(() => {
-            res.render('chats/chat', { user: loggedIn });
+        .then(()=>{
+            return User.findById(loggedIn._id).populate('friendList').exec()
+                .then((user) => {
+                    console.log(user)
+                    return user;
+                });
+        })
+        .then((data) => {
+            res.render('chats/chat', { user: data });
         })
         .catch((err) =>{
             console.log(err);

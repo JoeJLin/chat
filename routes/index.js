@@ -21,6 +21,7 @@ router.get('/login', (req, res) => {
 
 // POST Login
 router.post('/login', (req, res, next) => {
+  // const io = res.locals['socketio'];
   // req.body is the body of the login.hbs
   // req.body.username and password must be matched with the names in the login.hbs
   User.authenticate(req.body.username, req.body.password, (err, user) => {
@@ -33,11 +34,11 @@ router.post('/login', (req, res, next) => {
 
       return next(NextError);
     }
-
     req.session.userId = user._id;
     req.session.username = user.username;
-
-    
+    // io.on('connection', function (socket) {
+    //   require('../sockets/server.js')(io, socket);
+    // })
     return res.redirect('/');
   });
 });
