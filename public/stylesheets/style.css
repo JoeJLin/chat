@@ -137,6 +137,10 @@ a.navbar-item:hover{
   border: 2px solid rgb(229, 229, 229);
 }
 
-.friendList{
-  
+#testing{
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+  width: 200px;
 }

@@ -4,7 +4,7 @@ module.exports = (io, socket, onlineUsers) => {
 
     //handle chat event
     socket.on('publicChat', function (data) {
-        io.sockets.emit('publicChat', data)
+        io.emit('publicChat', data)
         console.log(data);
     });
 
@@ -27,12 +27,28 @@ module.exports = (io, socket, onlineUsers) => {
     });
     
     socket.on('private message', (data)=> {
-        console.log(`private message by ${data.username} to ${data.receiver}`);
+        console.log(`private message by ${data.sender} to ${data.receiver}`);
         //check if receiver is online
         if(data.receiver in onlineUsers){
             console.log('SENDING A PRIVATE MESSAGE!!!!!!' + onlineUsers[data.receiver])
-            socket.to(onlineUsers[data.receiver]).emit('To receiver', data);
+            //write one for sender and receiver
+            io.to(onlineUsers[data.receiver]).emit('to receiver', data);
+            io.to(onlineUsers[data.sender]).emit('to sender', data);
         }
     })
 
+    socket.on('room chat', function(data){
+        console.log('YOU ARE IN ' + data.room)
+        io.to(data.room).emit('room', data);
+    })
+
+    socket.on('join room', function(data){
+        console.log('JOIN ' + data);
+        socket.join(data);
+    })
+
+    socket.on('leave room', function(data){
+        console.log('LEAVE ' + data);
+        socket.leave(data);
+    })
 }
