@@ -14,8 +14,9 @@ var removeRoom = document.getElementById('removeRoom');
 //emit event
 //pass chat to app.js and let app.js send it to all other clients
 button.addEventListener('click', function(){
+    console.log(socket.roomName)
     if (message.value != '') {
-        if (receiver.value == '' && socket['roomName'] != '') {
+        if (receiver.value == '' && !socket['roomName']) {
             socket.emit('publicChat', {
                 message: message.value,
                 username: username
@@ -29,7 +30,7 @@ button.addEventListener('click', function(){
                 receiver: receiver.value,
             })
             console.log('this is a private message')
-        } else if (socket['roomName'].length != 0){
+        } else if (socket['roomName']){
             console.log('IN BUTTON EVENT')
             socket.emit('room chat', {
                 message: message.value,
@@ -72,8 +73,9 @@ message.addEventListener('keyup', function(){
 addRoom.addEventListener('click', function(){
     if(roomName.value.length != 0){
         socket['roomName'] = roomName.value;
-        console.log('TRYING TO ADD ROOM' + socket['roomName'])
+        console.log('TRYING TO ADD ROOM ' + socket['roomName'])
         // roomName.value = '';
+        
         socket.emit('join room', socket['roomName'])
     }
 })
@@ -90,7 +92,7 @@ removeRoom.addEventListener('click', function(){
 
 //listen for events
 socket.on('publicChat', function(data){
-    output.innerHTML += '<p class="textMessage"><strong>' + data.username + '</strong>' + ': ' + data.message + '</p>';
+    output.innerHTML += '<strong>' + data.username + '</strong> : ' + '<p class="textMessage">' + data.message + '</p>';
     message.value = '';
     feedback.innerHTML = '';
     console.log(socket);

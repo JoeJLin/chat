@@ -4,7 +4,8 @@ module.exports = (io, socket, onlineUsers) => {
 
     //handle chat event
     socket.on('publicChat', function (data) {
-        io.emit('publicChat', data)
+        socket.broadcast.emit('publicChat', data)
+        socket.emit('publicChat', data)
         console.log(data);
     });
 
