@@ -7,9 +7,9 @@ var button = document.getElementById('send');
 var username = document.getElementById('currentUserName').textContent;
 var feedback = document.getElementById('feedback');
 var receiver = document.getElementById('receiver');
-var roomName = document.getElementById('roomName');
-var addRoom = document.getElementById('addRoom');
-var removeRoom = document.getElementById('removeRoom');
+// var roomName = document.getElementById('roomName');
+// var addRoom = document.getElementById('addRoom');
+// var removeRoom = document.getElementById('removeRoom');
 var onlineUser = document.getElementsByClassName('onlineUser');
 var addChannel = document.getElementById('addChannel');
 var channelDropdown = document.querySelector('sidebar-channel-div');
@@ -71,7 +71,6 @@ createChannel.addEventListener('click', function(e){
 //emit event
 //pass chat to app.js and let app.js send it to all other clients
 button.addEventListener('click', function(){
-    // console.log(socket.roomName)
     if (message.value != '') {
         console.log(username)
         let currentChannel = document.querySelector('.channel-active').textContent;
@@ -120,27 +119,6 @@ message.addEventListener('keypress', function(e){
 //     }
 // })
 
-//add room to user (socket)
-addRoom.addEventListener('click', function(){
-    if(roomName.value.length != 0){
-        socket['roomName'] = roomName.value;
-        console.log('TRYING TO ADD ROOM ' + socket['roomName'])
-        // roomName.value = '';
-        
-        socket.emit('join room', socket['roomName'])
-    }
-})
-
-//remove room from user (socket)
-removeRoom.addEventListener('click', function(){
-    if(roomName.value.length != 0){
-        console.log('TRYING TO REMOVE ROOM' + socket['roomName'])
-        socket.emit('leave room', socket['roomName']);
-        socket['roomName'] = '';
-        roomName.value = '';
-    }
-})
-
 //listen for events
 socket.on('publicChat', function(data){
     output.innerHTML += '<div class="message"><strong>' + data.username + '</strong> : ' + '<p class="textMessage">' + data.message + '</p></div>';
@@ -186,12 +164,6 @@ socket.on('to sender', function (data) {
     feedback.innerHTML = '';
 })
 
-socket.on('room', function(data){
-    output.innerHTML += '<p class="textMessage"> You are In ' + data.room + ' Room <strong>' + data.username + '</strong>' + ': ' + data.message + '</p>';
-    message.value = '';
-    receiver.value = '';
-    feedback.innerHTML = '';
-})
 
 socket.on('switch channel', function(channelObj, channelName){
     console.log(channelObj);
@@ -211,7 +183,11 @@ socket.on('channel message', function(data){
 
 })
 
-socket.on('user in channel', function(numUsers){
+socket.on('update user in channel', function(numUsers){
     console.log(numUsers);
     document.getElementById('numUsers').textContent = numUsers;
+})
+
+socket.on('refresh user in list', function(){
+    socket.emit('refresh user in list');
 })

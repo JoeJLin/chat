@@ -14,9 +14,18 @@ module.exports = (io, socket, onlineUsers, channels) => {
     //     console.log(data)
     // });
 
+    socket.on('refresh user in list', ()=>{
+        console.log(socket.rooms)
+        for (channel in socket.rooms) {
+            console.log('i am in here' + channel)
+            io.emit('update user in channel', io.sockets.adapter.rooms[channel].length);
+        }
+    })
+
     socket.on('disconnect', function(){
         console.log(socket.username)
         console.log('a user left ' + onlineUsers[socket.username]);
+        io.emit('refresh user in list');
         delete onlineUsers[socket.username];
         io.emit('a user left', onlineUsers);
     });
@@ -26,23 +35,23 @@ module.exports = (io, socket, onlineUsers, channels) => {
         onlineUsers[username] = socket.id;
         socket.join('General');
         io.emit('users list', onlineUsers);
-        io.emit('user in channel', io.sockets.adapter.rooms['General'].length)
+        io.emit('update user in channel', io.sockets.adapter.rooms['General'].length);
     });
     
     socket.on('switch channel', (oldChannel, newChannel) =>{
-        console.log('switching channel!!');
-        // socket.leave(oldChannel);
+        console.log(socket.rooms);
         console.log(io.sockets.adapter.rooms[newChannel].length)
         socket.join(newChannel);
+        io.emit('update user in channel', io.sockets.adapter.rooms[newChannel].length);
         socket.emit('switch channel', channels[newChannel], newChannel);
     })
 
     socket.on('create new channel', (oldChannel, newChannel)=>{
         console.log('created and join new channel ' + newChannel)
         channels[newChannel] = [];
-        // socket.leave(oldChannel);
         socket.join(newChannel);
         socket.broadcast.emit('new channel', newChannel);
+        io.emit('update user in channel', io.sockets.adapter.rooms[newChannel].length);
         socket.emit('switch channel', channels[newChannel], newChannel);
     })
 
@@ -63,11 +72,6 @@ module.exports = (io, socket, onlineUsers, channels) => {
             io.to(onlineUsers[data.receiver]).emit('to receiver', data);
             io.to(onlineUsers[data.sender]).emit('to sender', data);
         }
-    })
-
-    socket.on('room chat', function(data){
-        console.log('YOU ARE IN ' + data.room)
-        io.to(data.room).emit('room', data);
     })
 
     socket.on('join room', function(data){

@@ -124,6 +124,10 @@ a.navbar-item:hover{
   margin-bottom: 5px;
 }
 
+.card-footer{
+  padding: 1.5rem;
+}
+
 #feedback{
   color: rgb(229, 229, 229);
 }
