@@ -35,8 +35,9 @@ var io = socket(server);
 
 
 const onlineUsers = {};
+const channels = { General: [] };
 io.on('connection', function (socket) {
-  require('./sockets/server.js')(io, socket, onlineUsers);
+  require('./sockets/server.js')(io, socket, onlineUsers, channels);
 })
 
 // view engine setup

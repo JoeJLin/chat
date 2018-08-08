@@ -1,10 +1,10 @@
-<div style="display:none" id="username" value="{{user.username}}"></div>
+{{!-- <div style="display:none" id="username" value="{{user.username}}"></div> --}}
 
 
-<div class="columns" id="chat-content">
+<div class="columns is-mobile" id="chat-content">
 
     <aside class="menu column is-one-fifth-desktop is-one-fifth-mobile is-one-fifth-tablet">
-        <p class="menu-label">General</p>
+        
         <form action="/chats/chat/add" method="GET">
             <div class="field">
                 <div class="control">
@@ -17,21 +17,36 @@
                 </div>
             </div>
         </form>
-
+        <div id="friendList"></div>
+        <p class="menu-label">Friend List</p>
         <ul class="menu-list">
-             {{#each user.friendList as | friend |}}
-                <li style="color:white">
-                    <a>{{this.username}}</a>
-                </li>
+            {{#each user.friendList as | friend |}}
+            <li style="color:white">
+                <a>{{this.username}}</a>
+            </li>
             {{/each}}
         </ul>
+        <div class="sidebar-channel-div display-between">
+            <h2>Channel</h2>
+            <span id="addChannel"><i class="fas fa-plus"></i></span>
+        </div>
+        <div id="channelContent" class="displayChannelInput display-between">
+            <input type="text" placeholder="Create Channel" class="input is-black" id="channelInput">
+            <span id="createChannel"><i class="fas fa-check"></i></span>
+        </div>
+        
+        <div id="channelList">
+            <div class="channel channel-active">General</div>
+        </div>
+
     </aside>
 
     <div class="columns is-centered" id="chat">
         <div class="card column is-one-half-desktop is-one-half-mobile is-one-half-tablet is-narrow chat-card">
             <div class="card-content">
                 <div class="is-desktop">
-                    <h1 class="title is-3" id="globalTitle">Global Chat</h1>
+                    <h1 class="title is-3" id="chatTitle">General</h1>
+                    <div id="userCountDiv"><span><i class="fas fa-users"></i></span><span id="numUsers"></span></div>
                     <div class="is-primary" id="chat-window">
                         <div id="output"></div>
                         <div id="feedback"></div>
@@ -48,10 +63,10 @@
                     </div>
                     <div class="field is-grouped ">
                         <div class="control is-grouped-left">
-                            <button class="button is-black is-outlined" id="removeRoom">remove room</button>
+                            <button class="button is-black is-outlined" id="removeRoom">Leave Room</button>
                         </div>
                         <div class="control is-grouped-right">
-                            <button class="button is-black is-outlined" id="addRoom">add room</button>
+                            <button class="button is-black is-outlined" id="addRoom">Join Room</button>
                         </div>
         
                     </div>
