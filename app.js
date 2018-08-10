@@ -27,7 +27,7 @@ app.use(session({
   saveUninitialized: true
 }));
 
-var server = app.listen(process.env.PORT || 3000, function(){
+var server = app.listen(process.env.PORT, function(){
   console.log('listening on port 3000')
 })
 
