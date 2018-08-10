@@ -33,7 +33,6 @@ module.exports = (io, socket, onlineUsers, Message, User) => {
                 return user.channelList;
             })
             .then((channelList) =>{
-                console.log('im in channel list')
                 socket.emit('personal channel list', channelList);
             })
             .then(()=>{
@@ -42,7 +41,7 @@ module.exports = (io, socket, onlineUsers, Message, User) => {
             .then((chatHistory)=> {
                 if(chatHistory){
                     // console.log(chatHistory.conversation);
-                    socket.emit('get chat history', chatHistory);
+                    socket.emit('get chat history', chatHistory.conversation);
                 } else{
                     throw 'CHAT HISTORY DOES NOT EXISTS';
                 }
@@ -58,6 +57,8 @@ module.exports = (io, socket, onlineUsers, Message, User) => {
     socket.on('switch channel', (newChannel) =>{
         console.log(newChannel);
         socket.join(newChannel);
+        socket.emit('switch channel', newChannel);
+        io.emit('update user in channel', io.sockets.adapter.rooms[newChannel].length);
         Message.findOne({channel: newChannel})
             .then((channel) =>{
                 if (!channel.conversation){
@@ -65,28 +66,51 @@ module.exports = (io, socket, onlineUsers, Message, User) => {
                     // console.log(channel)
                 } else {    
                     console.log('found conversation')
+                    socket.emit('get chat history', channel.conversation);
                 }
             })
             .catch((err)=>{
                 console.log(err)
             })
-        io.emit('update user in channel', io.sockets.adapter.rooms[newChannel].length);
-        socket.emit('switch channel', newChannel);
     })
 
     socket.on('create new channel', (newChannel, username)=>{
         console.log('created and join new channel ' + newChannel)
-        User.findOneAndUpdate({ username: username }, { '$push': { channelList: { channel: newChannel} }})
+        Message.findOne({channel: newChannel})
+            .then((channel) => {
+                if(!channel){
+                    console.log('not found')
+                }else{
+                    // console.log('duplicate channel')
+                    throw 'Duplicate Channel';
+                }
+            })
+            .then(() =>{
+                // channel.update({ '$inc': { memberCount: 1 }});
+                let message = new Message({
+                    channel: newChannel,
+                    memberCount: +1,
+                })
+                message.save();
+            })
+            .then(()=>{
+                return User.findOneAndUpdate({ username: username }, 
+                    { 
+                        '$push': { channelList: { channel: newChannel } },  
+                    });
+            })
             .then((user) => {
-                console.log(`IM PUSHING CHANNEL ${user}`)
+                console.log(`IM PUSHING CHANNEL ${user}`);
+                socket.join(newChannel);
+                socket.broadcast.emit('new channel', newChannel);
+                io.emit('update user in channel', io.sockets.adapter.rooms[newChannel].length);
+                socket.emit('switch channel', newChannel);
+                io.to(onlineUsers[username]).emit('channel to itself', newChannel);
             })
-            .catch((err) =>{
+            .catch((err)=>{
                 console.log(err);
+                socket.emit('error message', err);
             })
-        socket.join(newChannel);
-        socket.broadcast.emit('new channel', newChannel);
-        io.emit('update user in channel', io.sockets.adapter.rooms[newChannel].length);
-        socket.emit('switch channel', newChannel);
     })
 
     socket.on('channel messages', (data)=>{

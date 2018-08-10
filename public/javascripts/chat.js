@@ -17,6 +17,7 @@ var createChannel = document.getElementById('createChannel');
 var channelList = document.getElementById('channelList');
 var channel = document.querySelectorAll('.channel');
 var publicChannelList = document.getElementById('publicChannelList');
+var closeWindow = document.getElementById('closeWindow');
 // var directRoomName;
 
 //listen for click users
@@ -36,10 +37,6 @@ var publicChannelList = document.getElementById('publicChannelList');
 //     })
 // }
 
-//add channel from public to personal channel
-// document.addEventListener('click', function(e){
-    
-// })
 
 document.addEventListener('click', function(e){
     if (e.target.className == 'publicChannel') {
@@ -61,8 +58,16 @@ document.addEventListener('click', function(e){
 
 //expand input channel box
 addChannel.addEventListener('click', function(){
-    console.log('button clicked')
-    channelContent.classList.toggle('displayChannelInput');
+    // console.log('button clicked')
+    document.querySelector('.chatDiv').classList.toggle('hide');
+    document.querySelector('.infoContent').classList.toggle('hide');
+    // channelContent.classList.toggle('displayChannelInput');
+})
+
+//close create channel window
+closeWindow.addEventListener('click', function(){
+    document.querySelector('.chatDiv').classList.remove('hide');
+    document.querySelector('.infoContent').classList.add('hide');
 })
 
 //create channel and append it to channel list
@@ -70,10 +75,7 @@ createChannel.addEventListener('click', function(e){
     if(channelInput.value.length > 0){
         let oldChannel = document.getElementById('chatTitle').textContent;
         socket.emit('create new channel', channelInput.value, username);
-        document.querySelector('.channel-active').classList.remove('channel-active');
-        channelList.innerHTML += '<div class="channel-active channel">' + channelInput.value + '</div>';
         channelInput.value = '';
-        channelContent.classList.toggle('displayChannelInput');
     }
 })
 
@@ -205,8 +207,8 @@ socket.on('refresh user in list', function(){
 })
 
 socket.on('get chat history', function(chatHistory){
-    for(let i = 0; i < chatHistory.conversation.length; i++){
-        output.innerHTML += '<div class="message"><strong>' + chatHistory.conversation[i].author + '</strong> : ' + '<p class="textMessage">' + chatHistory.conversation[i].message + '</p></div>';
+    for(let i = 0; i < chatHistory.length; i++){
+        output.innerHTML += '<div class="message"><strong>' + chatHistory[i].author + '</strong> : ' + '<p class="textMessage">' + chatHistory[i].message + '</p></div>';
     }
 })
 
@@ -217,4 +219,14 @@ socket.on('personal channel list', function (list){
     list.forEach(data => {
         channelList.innerHTML += '<div class="channel">' + data.channel + '</div>';
     });
+})
+
+socket.on('error message', function(message){
+    alert(message);
+})
+
+socket.on('channel to itself', function(channel){
+    document.querySelector('.channel-active').classList.remove('channel-active');
+    channelList.innerHTML += '<div class="channel-active channel">' + channel + '</div>';
+    channelContent.classList.toggle('displayChannelInput');
 })

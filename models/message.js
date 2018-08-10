@@ -8,6 +8,10 @@ const MessageSchema = new Schema({
         required: true,
         unique: true, 
     },
+    memberCount: {
+        type: Number,
+        default: 0,
+    },
     conversation: [{
         author: {
             type: String,

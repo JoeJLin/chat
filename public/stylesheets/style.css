@@ -317,3 +317,30 @@ aside{
   /* left: -25px; */
   /* padding-right: -20px; */
 }
+
+#channelList{
+  height: 380px;
+  overflow: scroll;
+}
+
+.infoContent{
+  position: relative;
+  /* top: -50%; */
+  background-color: rgba(229, 229, 229, .9);
+  /* height: 100%; */
+  /* display: none; */
+}
+
+#closeWindow:hover{
+  color: black;
+  /* background-color: white; */
+  border-radius: 15px;
+}
+
+.display{
+  display: block;
+}
+
+.hide{
+  display: none;
+}
