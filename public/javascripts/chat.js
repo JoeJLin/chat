@@ -1,5 +1,6 @@
 //make connection
-var socket = io.connect('http://localhost:3000');
+// var socket = io.connect('http://localhost:3000');
+var socket = io.connect(window.location.hostname);
 
 var message = document.getElementById('message');
 var output = document.getElementById('output');
@@ -18,25 +19,6 @@ var channelList = document.getElementById('channelList');
 var channel = document.querySelectorAll('.channel');
 var publicChannelList = document.getElementById('publicChannelList');
 var closeWindow = document.getElementById('closeWindow');
-// var directRoomName;
-
-//listen for click users
-// for(let i = 0; i< onlineUser.length; i++){
-//     onlineUser[i].addEventListener('click', function (e) {
-//         console.log(e.target.textContent)
-//         directRoomName = e.target.textContent + '-' + username;
-//         console.log(username)
-//         console.log(directRoomName);
-//         socket.emit('join room', directRoomName);
-//     })
-// }
-
-// for(let i = 0; i < channel.length; i++){
-//     channel[i].addEventListener('click', function(e){
-//         console.log(e.target.className);
-//     })
-// }
-
 
 document.addEventListener('click', function(e){
     if (e.target.className == 'publicChannel') {
