@@ -1,5 +1,5 @@
 //make connection
-var socket = io.connect();
+var socket = io();
 
 var message = document.getElementById('message');
 var output = document.getElementById('output');
