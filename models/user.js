@@ -17,11 +17,11 @@ const UserSchema = mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     }],
-    isOnline: {
-        type: Boolean,
-        default: false,
-    },
-
+    channelList: [{
+        channel: {
+            type: String,
+        },
+    }],
 });
 
 //add salt

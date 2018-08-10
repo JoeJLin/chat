@@ -1,5 +1,5 @@
 //make connection
-var socket = io();
+var socket = io.connect('http://localhost:3000');
 
 var message = document.getElementById('message');
 var output = document.getElementById('output');
@@ -52,9 +52,8 @@ document.addEventListener('click', function(e){
     if (e.target.className == 'channel'){
         console.log(e.target.textContent);
         console.log(document.getElementById('chatTitle').textContent);
-        let oldChannel = document.getElementById('chatTitle').textContent;
         let newChannel = e.target.textContent;
-        socket.emit('switch channel', oldChannel, newChannel);
+        socket.emit('switch channel', newChannel);
         document.querySelector('.channel-active').classList.remove('channel-active');
         e.target.classList.add('channel-active');
     } 
@@ -70,7 +69,7 @@ addChannel.addEventListener('click', function(){
 createChannel.addEventListener('click', function(e){
     if(channelInput.value.length > 0){
         let oldChannel = document.getElementById('chatTitle').textContent;
-        socket.emit('create new channel', oldChannel, channelInput.value);
+        socket.emit('create new channel', channelInput.value, username);
         document.querySelector('.channel-active').classList.remove('channel-active');
         channelList.innerHTML += '<div class="channel-active channel">' + channelInput.value + '</div>';
         channelInput.value = '';
@@ -150,7 +149,7 @@ socket.on('users list', function(data){
 });
 
 socket.on('init', function(data){
-    socket.emit('new user', username);
+    socket.emit('online user', username);
     console.log(data, ' it works!!!!')
 })
 
@@ -175,9 +174,8 @@ socket.on('to sender', function (data) {
 })
 
 
-socket.on('switch channel', function(channelObj, channelName){
-    console.log(channelObj);
-    console.log(channelName);
+socket.on('switch channel', function(channelName){
+    console.log(channelName + ' channel');
     output.innerHTML = '';
     document.getElementById('chatTitle').innerHTML = '';
     document.getElementById('chatTitle').innerHTML += channelName;
@@ -187,9 +185,6 @@ socket.on('new channel', function(channelName){
     publicChannelList.innerHTML += 
         `<div class="publicChannel"> 
             ${channelName} 
-            <span class="addToChannelList">
-                <i class="fas fa-ellipsis-v"></i>
-            </span>
         </div>`
     ;
 })
@@ -213,4 +208,13 @@ socket.on('get chat history', function(chatHistory){
     for(let i = 0; i < chatHistory.conversation.length; i++){
         output.innerHTML += '<div class="message"><strong>' + chatHistory.conversation[i].author + '</strong> : ' + '<p class="textMessage">' + chatHistory.conversation[i].message + '</p></div>';
     }
+})
+
+socket.on('personal channel list', function (list){
+    console.log('im got called')
+    channelList.innerHTML = '';
+    channelList.innerHTML += '<div class="channel-active channel">General</div>';
+    list.forEach(data => {
+        channelList.innerHTML += '<div class="channel">' + data.channel + '</div>';
+    });
 })

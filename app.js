@@ -6,6 +6,7 @@ var logger = require('morgan');
 var socket = require('socket.io');
 var session = require('express-session');
 const Message = require('./models/message');
+const User = require('./models/user');
 require('dotenv').config();
 
 var indexRouter = require('./routes/index');
@@ -27,7 +28,7 @@ app.use(session({
   saveUninitialized: true
 }));
 
-var server = app.listen(process.env.PORT || 3000, function(){
+var server = app.listen(3000, function(){
   console.log('listening on port 3000')
 })
 
@@ -36,9 +37,8 @@ var io = socket(server);
 
 
 const onlineUsers = {};
-const channels = { General: [] };
 io.on('connection', function (socket) {
-  require('./sockets/server.js')(io, socket, onlineUsers, channels, Message);
+  require('./sockets/server.js')(io, socket, onlineUsers, Message, User);
 })
 
 // view engine setup

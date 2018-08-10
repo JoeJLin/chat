@@ -288,10 +288,10 @@ aside{
   background-color: #222;
   border:1px solid #999;
   border-radius: 10px;
-  -webkit-transition: all 0.5s ease-in-out;
+  /* -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -309,8 +309,6 @@ aside{
 .addToChannelList{
   position: relative;
   /* right: 15px; */
-  width: 16px;
-  height: 16px;
 }
 
 .publicChannel:hover{
