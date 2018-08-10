@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var socket = require('socket.io');
 var session = require('express-session');
+const Message = require('./models/message');
 require('dotenv').config();
 
 var indexRouter = require('./routes/index');
@@ -37,7 +38,7 @@ var io = socket(server);
 const onlineUsers = {};
 const channels = { General: [] };
 io.on('connection', function (socket) {
-  require('./sockets/server.js')(io, socket, onlineUsers, channels);
+  require('./sockets/server.js')(io, socket, onlineUsers, channels, Message);
 })
 
 // view engine setup

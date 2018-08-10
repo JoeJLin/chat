@@ -1,13 +1,6 @@
-module.exports = (io, socket, onlineUsers, channels) => {
+module.exports = (io, socket, onlineUsers, channels, Message) => {
     socket.emit('init', socket.id)
     console.log('connected socket ' + socket.id);
-
-    //handle chat event
-    socket.on('publicChat', function (data) {
-        socket.broadcast.emit('publicChat', data)
-        socket.emit('publicChat', data)
-        console.log(data);
-    });
 
     // socket.on('typing', function (data) {
     //     socket.broadcast.emit('typing', data);
@@ -17,7 +10,6 @@ module.exports = (io, socket, onlineUsers, channels) => {
     socket.on('refresh user in list', ()=>{
         console.log(socket.rooms)
         for (channel in socket.rooms) {
-            console.log('i am in here' + channel)
             io.emit('update user in channel', io.sockets.adapter.rooms[channel].length);
         }
     })
@@ -34,6 +26,19 @@ module.exports = (io, socket, onlineUsers, channels) => {
         socket['username'] = username;
         onlineUsers[username] = socket.id;
         socket.join('General');
+        Message.findOne({channel: 'General'})
+            .then((chatHistory)=> {
+                if(chatHistory){
+                    console.log(chatHistory.conversation);
+                    socket.emit('get chat history', chatHistory);
+                } else{
+                    throw 'CHAT HISTORY DOES NOT EXISTS';
+                }
+            })
+            .catch((err) =>{
+                console.log(err);
+            })
+        
         io.emit('users list', onlineUsers);
         io.emit('update user in channel', io.sockets.adapter.rooms['General'].length);
     });
@@ -59,6 +64,33 @@ module.exports = (io, socket, onlineUsers, channels) => {
         console.log(data.username + 'you are in server channel messages ' + data.channel);
         data['time'] = new Date().toLocaleTimeString();
         console.log('messages ' + data.time);
+        Message.findOne({channel: data.channel})
+            .then((channel)=>{
+                if(channel){
+                    // console.log('exists in db' + channel);
+                    channel.conversation.push({
+                        author: data.username,
+                        message: data.message,
+                        time: new Date().toLocaleTimeString(),
+                    });
+                    channel.save();
+                } else if(!channel){
+                    console.log('not exists in db, now SAVING!!');
+                    let message = new Message({
+                    channel: data.channel,
+                    conversation: {
+                            author: data.username,
+                            message: data.message,
+                            time: new Date().toLocaleTimeString(),
+                        }
+                });
+                    message.save();
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        
         io.to(data.channel).emit('channel message', data);
     });
 

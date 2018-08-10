@@ -1,100 +1,109 @@
-{{!-- <div style="display:none" id="username" value="{{user.username}}"></div> --}}
+<div class="tile is-ancestor is-mobile columns">
+    <div class="tile is-parent">
+        <article class="tile is-child notification is-success">
+            <div class="content">
+                <p class="subtitle">Friend List</p>
+                <div class="content">
+                    <form action="/chats/chat/add" method="GET">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-black" type="text" placeholder="Friend Name" id="friendName" name="friendName">
+                            </div>
+                        </div>
+                        <div class="field is-grouped is-grouped-right">
+                            <div class="control">
+                                <button type="submit" class="button is-white is-outlined" id="addFriend">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                    <p class="menu-label">Friend List</p>
+                    <ul class="menu-list">
+                        {{#each user.friendList as | friend |}}
+                        <li style="color:white">
+                            <a>{{this.username}}</a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                    <div class="sidebar-channel-div display-between">
+                        <div class="subtitle" style="margin-bottom:0;">Channels</div>
+                        <span id="addChannel">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                    </div>
+                    <div id="channelContent" class="displayChannelInput display-between">
+                        <input type="text" placeholder="Create Channel" class="input is-black" id="channelInput">
+                        <span id="createChannel">
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </div>
 
-
-<div class="columns is-mobile" id="chat-content">
-
-    <aside class="menu column is-one-fifth-desktop is-one-fifth-mobile is-one-fifth-tablet">
-        
-        <form action="/chats/chat/add" method="GET">
-            <div class="field">
-                <div class="control">
-                    <input class="input is-black" type="text" placeholder="Friend Name" id="friendName" name="friendName">
-                </div>
-            </div>
-            <div class="field is-grouped is-grouped-right">
-                <div class="control">
-                    <button type="submit" class="button is-white is-outlined" id="addFriend">Add</button>
-                </div>
-            </div>
-        </form>
-        <div id="friendList"></div>
-        <p class="menu-label">Friend List</p>
-        <ul class="menu-list">
-            {{#each user.friendList as | friend |}}
-            <li style="color:white">
-                <a>{{this.username}}</a>
-            </li>
-            {{/each}}
-        </ul>
-        <div class="sidebar-channel-div display-between">
-            <h2>Channel</h2>
-            <span id="addChannel"><i class="fas fa-plus"></i></span>
-        </div>
-        <div id="channelContent" class="displayChannelInput display-between">
-            <input type="text" placeholder="Create Channel" class="input is-black" id="channelInput">
-            <span id="createChannel"><i class="fas fa-check"></i></span>
-        </div>
-        
-        <div id="channelList">
-            <div class="channel channel-active">General</div>
-        </div>
-
-    </aside>
-
-    <div class="columns is-centered" id="chat">
-        <div class="card column is-one-half-desktop is-one-half-mobile is-one-half-tablet is-narrow chat-card">
-            <div class="card-content">
-                <div class="is-desktop">
-                    <h1 class="title is-3" id="chatTitle">General</h1>
-                    <div id="userCountDiv"><span><i class="fas fa-users"></i></span><span id="numUsers"></span></div>
-                    <div class="is-primary" id="chat-window">
-                        <div id="output"></div>
-                        <div id="feedback"></div>
+                    <div id="channelList">
+                        <div class="channel channel-active">General</div>
                     </div>
                 </div>
             </div>
-            <footer class="card-footer">
-        
-                {{!-- <div id="room-input" class="container">
-                    <div class="field">
-                        <div class="control">
-                            <input class="input is-black" placeholder="Join Room" id="roomName"></input>
-                        </div>
-                    </div>
-                    <div class="field is-grouped ">
-                        <div class="control is-grouped-left">
-                            <button class="button is-black is-outlined" id="removeRoom">Leave Room</button>
-                        </div>
-                        <div class="control is-grouped-right">
-                            <button class="button is-black is-outlined" id="addRoom">Join Room</button>
-                        </div>
-        
+        </article>
+    </div>
+    <div class="tile is-parent is-6 is-half-mobile column">
+        <article class="tile is-child box" id="more-info">
+            <p class="title" id="chatTitle">General</p>
+
+            <p class="subtitle">
+                <div id="userCountDiv">
+                    <span>
+                        <i class="fas fa-users"></i>
+                    </span>
+                    <span id="numUsers">0</span>
+                </div>
+            </p>
+
+            <hr>
+
+            <div class="is-primary" id="chat-window">
+                <div id="output"></div>
+                <div id="feedback"></div>
+            </div>
+
+            <hr>
+            
+            <div id="messageDiv" class="container">
+                {{!--
+                <div class="field">
+                    <div class="control">
+                        <input class="input is-black" placeholder="To Who?" id="receiver"></input>
                     </div>
                 </div> --}}
-        
-                <div id="messageDiv" class="container">
-                    <div class="field">
-                        <div class="control">
-                            <input class="input is-black" placeholder="To Who?" id="receiver"></input>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <textarea class="textarea is-black" placeholder="Please Enter Text!" id="message"></textarea>
-                        </div>
-                    </div>
-                    <div class="field is-grouped is-grouped-right">
-                        <div class="control">
-                            <button class="button is-black is-outlined" id="send">Send</button>
-                        </div>
+                <div class="field">
+                    <div class="control">
+                        <textarea class="textarea is-black" placeholder="Please Enter Text!" id="message"></textarea>
                     </div>
                 </div>
-            </footer>
-        
-        </div>
+                <div class="field is-grouped is-grouped-right">
+                    <div class="control">
+                        <button class="button is-black is-outlined" id="send">Send</button>
+                    </div>
+                </div>
+            </div>
+
+        </article>
     </div>
-    
+    <div class="tile is-parent">
+        <article class="tile is-child notification is-white">
+            <div class="content">
+                <p class="subtitle" style="margin-bottom:10px;">Online Users</p>
+                <div id="onlineUserList"></div>
+
+                <hr>
+                <p class="subtitle">Public Channels</p>
+                <div id="publicChannelList">
+
+                </div>
+            </div>
+        </article>
+    </div>
 </div>
+
+
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js'></script>
 <script src='/javascripts/chat.js'></script>

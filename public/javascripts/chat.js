@@ -7,10 +7,8 @@ var button = document.getElementById('send');
 var username = document.getElementById('currentUserName').textContent;
 var feedback = document.getElementById('feedback');
 var receiver = document.getElementById('receiver');
-// var roomName = document.getElementById('roomName');
-// var addRoom = document.getElementById('addRoom');
-// var removeRoom = document.getElementById('removeRoom');
-var onlineUser = document.getElementsByClassName('onlineUser');
+
+var onlineUserList = document.getElementById('onlineUserList');
 var addChannel = document.getElementById('addChannel');
 var channelDropdown = document.querySelector('sidebar-channel-div');
 var channelInput = document.getElementById('channelInput');
@@ -18,6 +16,7 @@ var channelContent = document.getElementById('channelContent');
 var createChannel = document.getElementById('createChannel');
 var channelList = document.getElementById('channelList');
 var channel = document.querySelectorAll('.channel');
+var publicChannelList = document.getElementById('publicChannelList');
 // var directRoomName;
 
 //listen for click users
@@ -37,6 +36,17 @@ var channel = document.querySelectorAll('.channel');
 //     })
 // }
 
+//add channel from public to personal channel
+// document.addEventListener('click', function(e){
+    
+// })
+
+document.addEventListener('click', function(e){
+    if (e.target.className == 'publicChannel') {
+        console.log(e.target.textContent + ' IM HERE!!')
+    }
+})
+
 //switch channel
 document.addEventListener('click', function(e){
     if (e.target.className == 'channel'){
@@ -47,7 +57,7 @@ document.addEventListener('click', function(e){
         socket.emit('switch channel', oldChannel, newChannel);
         document.querySelector('.channel-active').classList.remove('channel-active');
         e.target.classList.add('channel-active');
-    }
+    } 
 })
 
 //expand input channel box
@@ -120,22 +130,22 @@ message.addEventListener('keypress', function(e){
 // })
 
 //listen for events
-socket.on('publicChat', function(data){
-    output.innerHTML += '<div class="message"><strong>' + data.username + '</strong> : ' + '<p class="textMessage">' + data.message + '</p></div>';
-    message.value = '';
-    feedback.innerHTML = '';
-    console.log(socket);
-})
+// socket.on('publicChat', function(data){
+//     output.innerHTML += '<div class="message"><strong>' + data.username + '</strong> : ' + '<p class="textMessage">' + data.message + '</p></div>';
+//     message.value = '';
+//     feedback.innerHTML = '';
+//     console.log(socket);
+// })
 
-socket.on('typing', function(data){
-    feedback.innerHTML = '<p><em id="feedback">' + data + ' is typing a message...' + '</em></p>';
-})
+// socket.on('typing', function(data){
+//     feedback.innerHTML = '<p><em id="feedback">' + data + ' is typing a message...' + '</em></p>';
+// })
 
 socket.on('users list', function(data){
     console.log(data);
-    document.getElementById('friendList').innerHTML = '';
+    onlineUserList.innerHTML = '';
     for(user in data){
-        document.getElementById('friendList').innerHTML += '<div class="">' + user +'</div>';
+        onlineUserList.innerHTML += '<div class="onlineUser"><span><i class="fas fa-circle"></i></span>' + user +'</div>';
     }
 });
 
@@ -146,9 +156,9 @@ socket.on('init', function(data){
 
 socket.on('a user left', function(data){
     console.log(data);
-    document.getElementById('friendList').innerHTML = '';
+    onlineUserList.innerHTML = '';
     for (user in data) {
-        document.getElementById('friendList').innerHTML += '<div class="">' + user + '</div>';
+        onlineUserList.innerHTML += '<div class="onlineUser"><span><i class="fas fa-circle"></i></span>' + user + '</div>';
     }
 })
 
@@ -174,13 +184,20 @@ socket.on('switch channel', function(channelObj, channelName){
 })
 
 socket.on('new channel', function(channelName){
-    channelList.innerHTML += '<div class="channel">' + channelName + '</div>';
+    publicChannelList.innerHTML += 
+        `<div class="publicChannel"> 
+            ${channelName} 
+            <span class="addToChannelList">
+                <i class="fas fa-ellipsis-v"></i>
+            </span>
+        </div>`
+    ;
 })
 
 socket.on('channel message', function(data){
     console.log('you are in channel chat');
     output.innerHTML += '<div class="message"><strong>' + data.username + '</strong> : ' + '<p class="textMessage">' + data.message + '</p></div>';
-
+    message.value = '';
 })
 
 socket.on('update user in channel', function(numUsers){
@@ -190,4 +207,10 @@ socket.on('update user in channel', function(numUsers){
 
 socket.on('refresh user in list', function(){
     socket.emit('refresh user in list');
+})
+
+socket.on('get chat history', function(chatHistory){
+    for(let i = 0; i < chatHistory.conversation.length; i++){
+        output.innerHTML += '<div class="message"><strong>' + chatHistory.conversation[i].author + '</strong> : ' + '<p class="textMessage">' + chatHistory.conversation[i].message + '</p></div>';
+    }
 })
