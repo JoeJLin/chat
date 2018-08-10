@@ -1,6 +1,6 @@
 //make connection
 // var socket = io.connect('http://localhost:3000');
-var socket = io.connect(window.location.hostname);
+var socket = io.connect();
 
 var message = document.getElementById('message');
 var output = document.getElementById('output');
@@ -14,7 +14,7 @@ var addChannel = document.getElementById('addChannel');
 var channelDropdown = document.querySelector('sidebar-channel-div');
 var channelInput = document.getElementById('channelInput');
 var channelContent = document.getElementById('channelContent');
-var createChannel = document.getElementById('createChannel');
+// var createChannel = document.getElementById('createChannel');
 var channelList = document.getElementById('channelList');
 var channel = document.querySelectorAll('.channel');
 var publicChannelList = document.getElementById('publicChannelList');
@@ -53,13 +53,13 @@ closeWindow.addEventListener('click', function(){
 })
 
 //create channel and append it to channel list
-createChannel.addEventListener('click', function(e){
-    if(channelInput.value.length > 0){
-        let oldChannel = document.getElementById('chatTitle').textContent;
-        socket.emit('create new channel', channelInput.value, username);
-        channelInput.value = '';
-    }
-})
+// createChannel.addEventListener('click', function(e){
+//     if(channelInput.value.length > 0){
+//         let oldChannel = document.getElementById('chatTitle').textContent;
+//         socket.emit('create new channel', channelInput.value, username);
+//         channelInput.value = '';
+//     }
+// })
 
 //emit event
 //pass chat to app.js and let app.js send it to all other clients
