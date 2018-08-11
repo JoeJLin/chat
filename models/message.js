@@ -12,6 +12,26 @@ const MessageSchema = new Schema({
         type: Number,
         default: 0,
     },
+    description: {
+        type: String,
+        required: true,
+    },
+    limit: {
+        type: Number,
+        default: 100,
+    },
+    permission: {
+        type: String,
+    },
+    Owner: {
+        type: String,
+        required: true,
+    },
+    invitation: [{
+        username: {
+            type: String,
+        }
+    }],
     conversation: [{
         author: {
             type: String,

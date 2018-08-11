@@ -254,6 +254,7 @@ aside{
 .is-child{
   height: 100%;
   padding: 5px;
+  background-color: rgba(229, 229, 229, .9);
 }
 
 .is-parent{
@@ -285,9 +286,6 @@ aside{
   position: relative;
   left: 0;
   z-index: 1;
-  background-color: #222;
-  border:1px solid #999;
-  border-radius: 10px;
   /* -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
@@ -312,10 +310,19 @@ aside{
 }
 
 .publicChannel:hover{
-  border-color: #00B7FF;
+  /* border-color: #00B7FF; */
   background-color:#333333;
+  /* background-color: #222; */
+  border:1px solid #00B7FF;
+  border-radius: 10px;
   /* left: -25px; */
   /* padding-right: -20px; */
+}
+
+.publicChannel-active{
+  background-color:#333333;
+  border:1px solid pink;
+  border-radius: 10px;
 }
 
 #channelList{
@@ -343,4 +350,19 @@ aside{
 
 .hide{
   display: none;
+  z-index: -1;
+}
+
+#publicChannelList{
+  height: 220px;
+  overflow: scroll;
+}
+
+.permissionDiv{
+  position: relative;
+  background-color: rgba(229, 229, 229, .9);
+}
+
+.disallowClick{
+  pointer-events: none;
 }

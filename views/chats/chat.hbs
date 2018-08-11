@@ -1,6 +1,6 @@
 <div class="tile is-ancestor is-mobile columns">
     <div class="tile is-parent">
-        <article class="tile is-child notification is-success">
+        <article class="tile is-child notification">
             <div class="content">
                 <p class="subtitle">Friend List</p>
                 <div class="content">
@@ -81,56 +81,62 @@
         </article>
 
         <article class="tile is-child box infoContent hide">
-            <div class="is-grouped-right is-grouped field">
-                <div class="control">
-                    <span id="closeWindow">
-                        <i class="far fa-times-circle fa-2x"></i>
-                    </span>
+            <div>
+                <div class="is-grouped-right is-grouped field">
+                    <div class="control">
+                        <span id="closeWindow">
+                            <i class="far fa-times-circle fa-2x"></i>
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <label class="label">Channel Name</label>
-                    <input class="input is-black" placeholder="Channel Name" id="channelContent"></input>
-                    <p class="help">No spaces, any signs.</p>
+                <div class="field">
+                    <div class="control">
+                        <label class="label">Channel Name</label>
+                        <input class="input is-black" placeholder="Channel Name" id="channelName"></input>
+                        <p class="help">No spaces, any signs.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <label class="label">Description</label>
-                    <input class="input is-black" placeholder="Description" id=""></input>
-                    <p class="help">What's the channel about?</p>
+                <div class="field">
+                    <div class="control">
+                        <label class="label">Description</label>
+                        <input class="input is-black" placeholder="Description" id="description"></input>
+                        <p class="help">What's the channel about?</p>
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <label class="label">Max Member</label>
-                    <input class="input is-black" placeholder="Max Member" id=""></input>
-                    <p class="help">Set the limit of the channel. (Optional)</p>
+                <div class="field">
+                    <div class="control">
+                        <label class="label">Max Member</label>
+                        <input class="input is-black" placeholder="Max Member" id="limit"></input>
+                        <p class="help">Set the limit of the channel. (Optional)</p>
+                    </div>
                 </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <label class="label">Send invites to</label>
-                    <input class="input is-black" placeholder="Invites" id=""></input>
-                    <p class="help">(Optional)</p>
+                {{!--
+                <div class="field">
+                    <div class="control">
+                        <label class="label">Send invites to</label>
+                        <input class="input is-black" placeholder="Invites" id="invite"></input>
+                        <p class="help">(Optional)</p>
+                    </div>
+                </div> --}}
+                <div class="select is-black">
+                    <select id="security">
+                        <option>Public</option>
+                        <option>Private</option>
+                    </select>
                 </div>
-            </div>
-            <div class="select is-black">
-                <select id="security">
-                    <option>Public</option>
-                    <option>Private</option>
-                </select>
-            </div>
-            <div class="is-grouped-right is-grouped field">
-                <div class="control">
-                    <button class="button is-black is-outlined">Create</button>
+                <div class="is-grouped-right is-grouped field">
+                    <div class="control">
+                        <button class="button is-black is-outlined" id="createChannel">Create</button>
+                    </div>
                 </div>
             </div>
         </article>
+        <article class="tile is-child box permissionDiv hide">
+
+        </article>
     </div>
     <div class="tile is-parent">
-        <article class="tile is-child notification is-white">
+        <article class="tile is-child notification">
             <div class="content">
                 <p class="subtitle" style="margin-bottom:10px;">Online Users</p>
                 <hr>

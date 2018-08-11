@@ -26,17 +26,34 @@ module.exports = (io, socket, onlineUsers, Message, User) => {
         socket['username'] = username;
         onlineUsers[username] = socket.id;
         socket.join('General');
+        let personalList = [];
         User.findOne({username: username})
             .then((user) =>{
-                console.log(user.channelList)
-                console.log('channel list is not empty');
                 return user.channelList;
             })
             .then((channelList) =>{
+                for(let i = 0; i < channelList.length; i++){
+                    personalList.push(channelList[i].channel);
+                }
                 socket.emit('personal channel list', channelList);
             })
             .then(()=>{
                 return Message.findOne({ channel: 'General' })
+            })
+            .then((chatHistory) => {
+                Message.find({}, 'channel')
+                    .then((result) => {
+                        let channelArr = [];
+                        for (let i = 0; i < result.length; i++) {
+                            if (result[i].channel != 'General'){
+                                channelArr.push(result[i].channel);
+                            } else{
+                                
+                            }
+                        }
+                        socket.emit('compare two arrs', channelArr, personalList);
+                    })
+                    return chatHistory;
             })
             .then((chatHistory)=> {
                 if(chatHistory){
@@ -74,7 +91,7 @@ module.exports = (io, socket, onlineUsers, Message, User) => {
             })
     })
 
-    socket.on('create new channel', (newChannel, username)=>{
+    socket.on('create new channel', (newChannel, channelDescription, maxLimit, security, username)=>{
         console.log('created and join new channel ' + newChannel)
         Message.findOne({channel: newChannel})
             .then((channel) => {
@@ -82,14 +99,17 @@ module.exports = (io, socket, onlineUsers, Message, User) => {
                     console.log('not found')
                 }else{
                     // console.log('duplicate channel')
-                    throw 'Duplicate Channel';
+                    throw 'Channel name is duplicate';
                 }
             })
             .then(() =>{
-                // channel.update({ '$inc': { memberCount: 1 }});
                 let message = new Message({
                     channel: newChannel,
                     memberCount: +1,
+                    description: channelDescription,
+                    limit: maxLimit,
+                    permission: security,
+                    Owner: username,
                 })
                 message.save();
             })
@@ -100,8 +120,8 @@ module.exports = (io, socket, onlineUsers, Message, User) => {
                     });
             })
             .then((user) => {
-                console.log(`IM PUSHING CHANNEL ${user}`);
                 socket.join(newChannel);
+                socket.emit('clear create form');
                 socket.broadcast.emit('new channel', newChannel);
                 io.emit('update user in channel', io.sockets.adapter.rooms[newChannel].length);
                 socket.emit('switch channel', newChannel);
@@ -109,7 +129,7 @@ module.exports = (io, socket, onlineUsers, Message, User) => {
             })
             .catch((err)=>{
                 console.log(err);
-                socket.emit('error message', err);
+                socket.emit('error message', err); 
             })
     })
 

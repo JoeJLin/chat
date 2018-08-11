@@ -14,15 +14,39 @@ var addChannel = document.getElementById('addChannel');
 var channelDropdown = document.querySelector('sidebar-channel-div');
 var channelInput = document.getElementById('channelInput');
 var channelContent = document.getElementById('channelContent');
-// var createChannel = document.getElementById('createChannel');
+
 var channelList = document.getElementById('channelList');
 var channel = document.querySelectorAll('.channel');
 var publicChannelList = document.getElementById('publicChannelList');
 var closeWindow = document.getElementById('closeWindow');
 
+var createChannel = document.getElementById('createChannel');
+var channelName = document.getElementById('channelName');
+var description = document.getElementById('description');
+var limit = document.getElementById('limit');
+var invite = document.getElementById('invite');
+var security = document.getElementById('security');
+
+createChannel.addEventListener('click', function(){
+    if (channelName.value != '' && channelName.value.replace(/\s/g, '').length && description.value != '' && description.value.replace(/\s/g, '').length){
+            // socket.emti('')
+        socket.emit('create new channel', channelName.value, description.value, limit.value, security.value, username);
+
+    } else{
+        alert('You must enter a value in the field')
+    }
+
+})
+
+
 document.addEventListener('click', function(e){
-    if (e.target.className == 'publicChannel') {
-        console.log(e.target.textContent + ' IM HERE!!')
+    if (e.target.className == 'publicChannel' || e.target.className == 'publicChannel publicChannel-active') {
+        console.log(e.target.textContent + ' IM HERE!!');
+        socket.emit('peek on channel', e.target.textContent);
+        document.querySelector('.permissionDiv').classList.toggle('hide');
+        document.querySelector('.chatDiv').classList.toggle('hide');
+        e.target.classList.add('publicChannel-active');
+        addChannel.classList.toggle('disallowClick');
     }
 })
 
@@ -48,8 +72,8 @@ addChannel.addEventListener('click', function(){
 
 //close create channel window
 closeWindow.addEventListener('click', function(){
-    document.querySelector('.chatDiv').classList.remove('hide');
-    document.querySelector('.infoContent').classList.add('hide');
+    document.querySelector('.chatDiv').classList.toggle('hide');
+    document.querySelector('.infoContent').classList.toggle('hide');
 })
 
 //create channel and append it to channel list
@@ -64,7 +88,7 @@ closeWindow.addEventListener('click', function(){
 //emit event
 //pass chat to app.js and let app.js send it to all other clients
 button.addEventListener('click', function(){
-    if (message.value != '') {
+    if (message.value != '' && message.value.replace(/\s/g, '').length) {
         console.log(username)
         let currentChannel = document.querySelector('.channel-active').textContent;
         socket.emit('channel messages', {
@@ -210,5 +234,28 @@ socket.on('error message', function(message){
 socket.on('channel to itself', function(channel){
     document.querySelector('.channel-active').classList.remove('channel-active');
     channelList.innerHTML += '<div class="channel-active channel">' + channel + '</div>';
-    channelContent.classList.toggle('displayChannelInput');
+    // channelContent.classList.toggle('displayChannelInput');
+})
+
+socket.on('clear create form', function(){
+    createChannel.value = '';
+    channelName.value = '';
+    description.value = '';
+    limit.value = '';
+    security.value = 'Public';
+    document.querySelector('.chatDiv').classList.toggle('hide');
+    document.querySelector('.infoContent').classList.toggle('hide');
+})
+
+socket.on('compare two arrs', function (public, personalList){
+    console.log(public);
+    console.log(personalList);
+    var finalArr = public.filter((channel) => !personalList.includes(channel));
+    console.log(finalArr);
+    finalArr.forEach((channel) => {
+        publicChannelList.innerHTML += 
+            `<div class="publicChannel"> 
+                ${channel} 
+            </div>`
+    })
 })
