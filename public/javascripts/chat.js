@@ -45,7 +45,7 @@ document.addEventListener('click', function(e){
         socket.emit('peek on channel', e.target.textContent);
         document.querySelector('.permissionDiv').classList.toggle('hide');
         document.querySelector('.chatDiv').classList.toggle('hide');
-        e.target.classList.add('publicChannel-active');
+        e.target.classList.toggle('publicChannel-active');
         addChannel.classList.toggle('disallowClick');
     }
 })
@@ -191,9 +191,7 @@ socket.on('switch channel', function(channelName){
 
 socket.on('new channel', function(channelName){
     publicChannelList.innerHTML += 
-        `<div class="publicChannel"> 
-            ${channelName} 
-        </div>`
+        `<div class="publicChannel">${channelName}</div>`
     ;
 })
 
@@ -254,8 +252,6 @@ socket.on('compare two arrs', function (public, personalList){
     console.log(finalArr);
     finalArr.forEach((channel) => {
         publicChannelList.innerHTML += 
-            `<div class="publicChannel"> 
-                ${channel} 
-            </div>`
+            `<div class="publicChannel">${channel}</div>`
     })
 })

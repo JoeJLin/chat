@@ -188,4 +188,15 @@ module.exports = (io, socket, onlineUsers, Message, User) => {
         console.log('LEAVE ' + data);
         socket.leave(data);
     })
+
+    socket.on('peek on channel', (channelName) =>{
+        console.log(channelName)
+        Message.findOne({channel: channelName})
+            .then((channel) =>{
+                console.log(channel)
+            })
+            .catch((err) =>{
+                console.log(err);
+            })
+    })
 }

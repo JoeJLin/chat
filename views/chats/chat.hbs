@@ -45,7 +45,7 @@
         </article>
     </div>
     <div class="tile is-parent is-6 is-half-mobile column">
-        <article class="tile is-child box chatDiv">
+        <article class="tile is-child box chatDiv mainContent">
             <p class="title" id="chatTitle">General</p>
 
             <p class="subtitle">
@@ -80,12 +80,12 @@
             </div>
         </article>
 
-        <article class="tile is-child box infoContent hide">
+        <article class="tile is-child box infoContent hide mainContent">
             <div>
                 <div class="is-grouped-right is-grouped field">
                     <div class="control">
                         <span id="closeWindow">
-                            <i class="far fa-times-circle fa-2x"></i>
+                            <button class="delete"></button>
                         </span>
                     </div>
                 </div>
@@ -131,8 +131,34 @@
                 </div>
             </div>
         </article>
-        <article class="tile is-child box permissionDiv hide">
-
+        <article class="tile is-child box permissionDiv mainContent hide">
+            <div class="is-grouped-right is-grouped field">
+                <div class="control">
+                    <span id="closeInfoWindow">
+                        <button class="delete"></button>
+                    </span>
+                </div>
+            </div>
+        
+            <p class="title" id="JoinChannelTitle">General</p>
+            <p class="subtitle">
+                <span id="permission">Public</span>
+            </p>
+            <div class="display-between">
+                <div class="">Owner:
+                    <span id="ChannelOwner">JOe</span>
+                </div>
+                <div>Max Number:
+                    <span id="maxLimit">4</span>
+                </div>
+            </div>
+            <hr>
+            <p class="subtitle">Channel Description:</p>
+            <div id="JoinChannelDescription"></div>
+            <div class="display-between">
+                <button class="button is-black is-outlined is-medium" id="joinBtn">Join</button>
+                <button class="button is-black is-outlined is-medium" id="cancelBtn">Cancel</button>
+            </div>
         </article>
     </div>
     <div class="tile is-parent">
