@@ -320,7 +320,7 @@ aside{
 }
 
 #channelList{
-  height: 380px;
+  height: 360px;
   overflow: scroll;
 }
 
@@ -365,7 +365,7 @@ aside{
   padding: 10px;
 }
 
-#JoinChannelDescription{
+#joinChannelDescription{
   width: 100%;
   height: 200px;
   max-height: 300px;

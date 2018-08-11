@@ -27,24 +27,63 @@ var limit = document.getElementById('limit');
 var invite = document.getElementById('invite');
 var security = document.getElementById('security');
 
+var joinBtn = document.getElementById('joinBtn');
+var cancelBtn = document.getElementById('cancelBtn');
+var closeInfoWindow = document.getElementById('closeInfoWindow');
+var publicChannel = document.getElementsByClassName('publicChannel');
+
+joinBtn.addEventListener('click', function(){
+    let permission = document.getElementById('permission').textContent;
+    let channel = document.getElementById('joinChannelTitle').textContent;
+    let limit = document.getElementById('maxLimit').textContent;
+    if(permission == 'Public'){
+        // document.querySelector('.publicChannel-active').classList.remove('publicChannel-active');
+        // document.querySelector('.permissionDiv').classList.toggle('hide');
+        // document.querySelector('.chatDiv').classList.toggle('hide');
+        // publicChannelList.classList.toggle('disallowClick');
+        // addChannel.classList.toggle('disallowClick');
+        socket.emit('join from publicChannel', username, channel, limit, )
+    }
+})
+
+// X on the join page, click and close
+closeInfoWindow.addEventListener('click', function(){
+    document.querySelector('.publicChannel-active').classList.remove('publicChannel-active');
+    document.querySelector('.permissionDiv').classList.toggle('hide');
+    document.querySelector('.chatDiv').classList.toggle('hide');
+    publicChannelList.classList.toggle('disallowClick');
+    addChannel.classList.toggle('disallowClick');
+})
+
+
+//cancel button on the join page, click and go back
+cancelBtn.addEventListener('click', function(){
+    document.querySelector('.publicChannel-active').classList.remove('publicChannel-active');
+    document.querySelector('.permissionDiv').classList.toggle('hide');
+    document.querySelector('.chatDiv').classList.toggle('hide');
+    publicChannelList.classList.toggle('disallowClick');
+    addChannel.classList.toggle('disallowClick');
+})
+
 createChannel.addEventListener('click', function(){
     if (channelName.value != '' && channelName.value.replace(/\s/g, '').length && description.value != '' && description.value.replace(/\s/g, '').length){
             // socket.emti('')
         socket.emit('create new channel', channelName.value, description.value, limit.value, security.value, username);
-
+        publicChannelList.classList.toggle('disallowClick');
     } else{
         alert('You must enter a value in the field')
     }
 
 })
 
-
+// click on public channel 
 document.addEventListener('click', function(e){
     if (e.target.className == 'publicChannel' || e.target.className == 'publicChannel publicChannel-active') {
-        console.log(e.target.textContent + ' IM HERE!!');
+        console.log(e.target);
         socket.emit('peek on channel', e.target.textContent);
         document.querySelector('.permissionDiv').classList.toggle('hide');
         document.querySelector('.chatDiv').classList.toggle('hide');
+        publicChannelList.classList.toggle('disallowClick');
         e.target.classList.toggle('publicChannel-active');
         addChannel.classList.toggle('disallowClick');
     }
@@ -67,13 +106,14 @@ addChannel.addEventListener('click', function(){
     // console.log('button clicked')
     document.querySelector('.chatDiv').classList.toggle('hide');
     document.querySelector('.infoContent').classList.toggle('hide');
-    // channelContent.classList.toggle('displayChannelInput');
+    publicChannelList.classList.toggle('disallowClick');
 })
 
 //close create channel window
 closeWindow.addEventListener('click', function(){
     document.querySelector('.chatDiv').classList.toggle('hide');
     document.querySelector('.infoContent').classList.toggle('hide');
+    publicChannelList.classList.toggle('disallowClick');
 })
 
 //create channel and append it to channel list
@@ -251,7 +291,32 @@ socket.on('compare two arrs', function (public, personalList){
     var finalArr = public.filter((channel) => !personalList.includes(channel));
     console.log(finalArr);
     finalArr.forEach((channel) => {
-        publicChannelList.innerHTML += 
-            `<div class="publicChannel">${channel}</div>`
+        publicChannelList.innerHTML += `<div class="publicChannel">${channel}</div>`;
     })
+})
+
+socket.on('append data to content', function(data){
+    console.log('im in append ' + data.channel)
+    document.getElementById('joinChannelTitle').innerHTML = data.channel;
+    document.getElementById('permission').innerHTML = data.permission;
+    document.getElementById('ChannelOwner').innerHTML = data.Owner;
+    document.getElementById('joinChannelDescription').innerHTML = data.description;
+    if(data.limit == null){
+        document.getElementById('maxLimit').innerHTML = 'No Limit';
+    }else{
+        document.getElementById('maxLimit').innerHTML = data.limit;
+    }
+})
+
+socket.on('redirect to channel', function(channel){
+    console.log(document.querySelector('.publicChannel-active'));
+    let element = document.querySelector('.publicChannel-active')
+    element.parentElement.removeChild(element);
+    document.querySelector('.permissionDiv').classList.toggle('hide');
+    document.querySelector('.chatDiv').classList.toggle('hide');
+    publicChannelList.classList.toggle('disallowClick');
+    addChannel.classList.toggle('disallowClick');
+    document.querySelector('.channel-active').classList.remove('channel-active');
+    channelList.innerHTML +=`<div class="channel channel-active">${channel.channel}</div>`;
+    socket.emit('switch channel', channel.channel)
 })

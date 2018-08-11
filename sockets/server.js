@@ -194,9 +194,47 @@ module.exports = (io, socket, onlineUsers, Message, User) => {
         Message.findOne({channel: channelName})
             .then((channel) =>{
                 console.log(channel)
+                socket.emit('append data to content', channel)
             })
             .catch((err) =>{
                 console.log(err);
             })
+    })
+
+    socket.on('join from publicChannel', (user, channelName, limit)=>{
+        if(limit != null){
+            Message.findOne({channel: channelName})
+                .then((channel)=>{
+                    if(channel.memberCount < limit){
+                        console.log('there is room')
+                        channel.memberCount += 1;
+                        channel.save();
+                        return channel;
+                    } else if(channel.limit == null){
+                        console.log('there is room')
+                        channel.memberCount += 1;
+                        channel.save();
+                        return channel;
+                    }
+                    else{
+                        throw 'The channel is full';
+                    }
+                })
+                .then((channel)=>{
+                    console.log(channel)
+                    socket.emit('redirect to channel', channel);
+                })
+                .then(()=>{
+                    User.findOneAndUpdate({ username: username },
+                        {
+                            '$push': { channelList: { channel: channelName } },
+                        });
+                })
+                .catch((err)=>{
+                    console.log(err);
+                    socket.emit('error message', err); 
+                })
+        }
+        console.log(user, channelName, limit);
     })
 }
