@@ -320,3 +320,4 @@ socket.on('redirect to channel', function(channel){
     channelList.innerHTML +=`<div class="channel channel-active">${channel.channel}</div>`;
     socket.emit('switch channel', channel.channel)
 })
+//test
