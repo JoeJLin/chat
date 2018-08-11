@@ -130,40 +130,44 @@ closeWindow.addEventListener('click', function(){
 button.addEventListener('click', function(){
     if (message.value != '' && message.value.replace(/\s/g, '').length) {
         console.log(username)
-        let currentChannel = document.querySelector('.channel-active').textContent;
-        socket.emit('channel messages', {
-            message: message.value,
-            username: username,
-            channel: currentChannel,
-        });
+        if (message.value[0] == '@') {
+            let receiver = message.value.substr(1, message.value.indexOf(' ') - 1);
+            let textMessage = message.value.substr(message.value.indexOf(' ') + 1, message.value.length);
+            socket.emit('private message', {
+                message: textMessage,
+                sender: username,
+                receiver: receiver,
+            })
+        } else {
+            let currentChannel = document.querySelector('.channel-active').textContent;
+            socket.emit('channel messages', {
+                message: message.value,
+                username: username,
+                channel: currentChannel,
+            });
+        }
     }
 });
 
 //press enter to send message
 message.addEventListener('keypress', function(e){
-    if (message.value != ''){
+    if (message.value != '' && message.value.replace(/\s/g, '').length){
         if (e.keyCode === 13) {
-            if (receiver.value == '' && !socket['roomName']) {
-                socket.emit('publicChat', {
-                    message: message.value,
-                    username: username
-                });
-                console.log(roomName.value + 'FROM SEND!!!!')
-                console.log(socket + 'FROM SEND!!!!')
-            } else if (receiver.value != '') {
+            if(message.value[0] == '@'){
+                let receiver = message.value.substr(1, message.value.indexOf(' ') - 1);
+                let textMessage = message.value.substr(message.value.indexOf(' ') + 1, message.value.length);
                 socket.emit('private message', {
-                    message: message.value,
+                    message: textMessage,
                     sender: username,
-                    receiver: receiver.value,
+                    receiver: receiver,
                 })
-                console.log('this is a private message')
-            } else if (socket['roomName']) {
-                console.log('IN BUTTON EVENT')
-                socket.emit('room chat', {
+            } else{
+                let currentChannel = document.querySelector('.channel-active').textContent;
+                socket.emit('channel messages', {
                     message: message.value,
                     username: username,
-                    room: socket['roomName'],
-                })
+                    channel: currentChannel,
+                });
             }
         }
     }
@@ -210,14 +214,13 @@ socket.on('a user left', function(data){
 })
 
 socket.on('to receiver', function (data) {
-    output.innerHTML += '<p class="textMessage"> From <strong>' + data.sender + '</strong> <strong> To You </strong>' + ': ' + data.message + '</p>';
+    output.innerHTML += '<p class="message"> From <strong>' + data.sender + '</strong>' + ': ' + data.message + '</p>';
     feedback.innerHTML = '';
 })
 
 socket.on('to sender', function (data) {
-    output.innerHTML += '<p class="textMessage"> To <strong>' + data.receiver + '</strong> From <strong> You </strong>' + ': ' + data.message + '</p>';
+    output.innerHTML += '<p class="message"> To <strong>' + data.receiver + '</strong>' + ': ' + data.message + '</p>';
     message.value = '';
-    receiver.value = '';
     feedback.innerHTML = '';
 })
 
@@ -237,7 +240,7 @@ socket.on('new channel', function(channelName){
 
 socket.on('channel message', function(data){
     console.log('you are in channel chat');
-    output.innerHTML += '<div class="message"><strong>' + data.username + '</strong> : ' + '<p class="textMessage">' + data.message + '</p></div>';
+    output.innerHTML += '<div class="message"><strong>' + data.username + '</strong>: ' + '<p class="textMessage">' + data.message + '</p></div>';
     message.value = '';
 })
 
@@ -252,7 +255,7 @@ socket.on('refresh user in list', function(){
 
 socket.on('get chat history', function(chatHistory){
     for(let i = 0; i < chatHistory.length; i++){
-        output.innerHTML += '<div class="message"><strong>' + chatHistory[i].author + '</strong> : ' + '<p class="textMessage">' + chatHistory[i].message + '</p></div>';
+        output.innerHTML += '<div class="message"><strong>' + chatHistory[i].author + '</strong>: ' + '<p class="textMessage">' + chatHistory[i].message + '</p></div>';
     }
 })
 
@@ -320,4 +323,3 @@ socket.on('redirect to channel', function(channel){
     channelList.innerHTML +=`<div class="channel channel-active">${channel.channel}</div>`;
     socket.emit('switch channel', channel.channel)
 })
-//test

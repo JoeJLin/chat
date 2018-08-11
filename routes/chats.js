@@ -3,15 +3,15 @@ var router = express.Router();
 const User = require('../models/user');
 const auth = require('./helpers/auth');
 
-router.get('/chat', auth.requireLogin, (req, res, next) => {
+router.get('/', auth.requireLogin, (req, res, next) => {
     User.findById(req.session.userId).populate('friendList').exec((err, user) => {
         if (err) { console.error(err); }
-        res.render('chats/chat', { user });
+        res.render('chats/', { user });
     })
 });
 
 //add user to the friend 
-router.get('/chat/add', auth.requireLogin, (req, res) => {
+router.get('/add', auth.requireLogin, (req, res) => {
     console.log(req.query.friendName)
     let loggedIn;
     User.findById(req.session.userId).populate('friendList').exec()
@@ -46,11 +46,11 @@ router.get('/chat/add', auth.requireLogin, (req, res) => {
                 });
         })
         .then((data) => {
-            res.render('chats/chat', { user: data });
+            res.render('chats/', { user: data });
         })
         .catch((err) =>{
             console.log(err);
-            res.render('chats/chat', { user: loggedIn });
+            res.render('chats/', { user: loggedIn });
         })    
 })
 

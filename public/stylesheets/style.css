@@ -103,19 +103,32 @@ a.navbar-item:hover{
 }
 
 .textMessage{
-  color: black;
-  border: 2px solid black;
+  color: grey;
+  /* border: 2px solid black; */
   padding: 5px;
   border-radius: 5px;
   overflow: auto;
-  height: 50px;
+  min-height: 30px;
   width: 200px;
-  margin-bottom: 5px;
-  margin-top: 5px;
+  max-height: 200px;
+  /* margin-left: 10px; */
+  /* margin-bottom: 5px;
+  margin-top: 5px; */
 }
 
 .textMessage strong{
   color: rgb(229, 229, 229);
+}
+
+.message strong{
+  margin: 5px;
+  color: black;
+  font-weight: 700px;
+}
+
+.message{
+  background-color: #cfcfcf;
+  margin-bottom: 5px !important;
 }
 
 #chatTitle{
@@ -186,7 +199,7 @@ aside{
   width: 100%;
   height: 32px;
   padding: 8px 12px;
-  color: rgb(229, 229, 229);
+  /* color: rgb(229, 229, 229); */
   margin-top: 10px;
 }
 
@@ -194,6 +207,8 @@ aside{
   background-color: #f5f5f5;
   color: black !important;
   border-radius: 10px;
+  /* border-color: #00B7FF; */
+  /* border: 1px solid pink; */
 }
 
 .display-between{
@@ -203,16 +218,15 @@ aside{
 }
 
 .sidebar-channel-div{
-  color: rgb(229, 229, 229);
   margin-top: 5px;
   margin-bottom: 5px;
 }
 
-.sidebar-channel-div svg:hover{
+/* .sidebar-channel-div svg:hover{
   color: black;
   background: rgb(229, 229, 229);
   border-radius: 5px;
-}
+} */
 
 #channelInput{
   margin-top: 5px;
@@ -282,7 +296,7 @@ aside{
   width: 100%;
   height: 32px;
   padding: 8px 12px;
-  color: rgb(229, 229, 229);
+  /* color: rgb(229, 229, 229); */
   /* -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
@@ -305,17 +319,20 @@ aside{
 
 .publicChannel:hover{
   /* border-color: #00B7FF; */
-  background-color:#333333;
+  /* background-color:#333333; */
   /* background-color: #222; */
-  border:1px solid #00B7FF;
+  /* border:1px solid #00B7FF; */
   border-radius: 10px;
+  background-color: #f5f5f5;
+  color: black !important;
   /* left: -25px; */
   /* padding-right: -20px; */
 }
 
 .publicChannel-active{
-  background-color:#333333;
-  border:1px solid pink;
+  /* background-color:#333333; */
+  /* border:1px solid pink; */
+  background-color: #f5f5f5;
   border-radius: 10px;
 }
 
@@ -379,4 +396,30 @@ aside{
 
 hr{
   margin: 16px 0;
+}
+
+.friendList{
+  color: black;
+  list-style: none;
+  width: 100%;
+}
+
+.friendList a{
+  text-decoration: none !important;
+  width: 100%;
+}
+.friendList a:hover{
+  border-radius: 10px;
+}
+
+.menu-list{
+  margin: 0 10px !important;
+}
+
+#output{
+  padding: 5px;
+}
+
+.subtitle{
+  margin-left: 5px;
 }

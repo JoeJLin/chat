@@ -12,14 +12,13 @@
                         </div>
                         <div class="field is-grouped is-grouped-right">
                             <div class="control">
-                                <button type="submit" class="button is-white is-outlined" id="addFriend">Add</button>
+                                <button type="submit" class="button is-black is-outlined" id="addFriend">Add</button>
                             </div>
                         </div>
                     </form>
-                    <p class="menu-label">Friend List</p>
                     <ul class="menu-list">
                         {{#each user.friendList as | friend |}}
-                        <li style="color:white">
+                        <li class="friendList">
                             <a>{{this.username}}</a>
                         </li>
                         {{/each}}
@@ -69,7 +68,7 @@
             <div id="messageDiv" class="container">
                 <div class="field">
                     <div class="control">
-                        <textarea class="textarea is-black" placeholder="Please Enter Text!" id="message"></textarea>
+                        <textarea class="textarea is-black" placeholder="@ for direct message" id="message"></textarea>
                     </div>
                 </div>
                 <div class="field is-grouped is-grouped-right">
