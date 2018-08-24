@@ -225,10 +225,12 @@ module.exports = (io, socket, onlineUsers, Message, User) => {
                     socket.emit('redirect to channel', channel);
                 })
                 .then(()=>{
-                    User.findOneAndUpdate({ username: username },
-                        {
-                            '$push': { channelList: { channel: channelName } },
-                        });
+                    console.log(user)
+                    console.log(channelName)
+                    return User.findOneAndUpdate({ username: user }, {'$push': { channelList: { channel: channelName } }});
+                })
+                .then((user)=>{
+                    console.log(user)
                 })
                 .catch((err)=>{
                     console.log(err);

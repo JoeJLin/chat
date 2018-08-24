@@ -1,32 +1,28 @@
 # chat
-A web app that allows users to communicate with each other, able to send text messages, pictures. (Clone whats app)
+A web application that allows users to communicate in channels, organized by project, topic or team.
 
 ## Audience
-People who need to communicate with others??
-
-## Experience
-A user opens the web app to chat with his/her friends.
+People who wants collaborate with team, trade information on specific topic, and communicate with others.
 
 ## Features 
-* One 2 one (first)
-* Group chatroom
+* Able to create, join and leave channel
+* List of channels
 * Private chatroom
 * Notifications
-* Able to send pictures
 * Add friends 
 * List of friends
 
-## Possible features (if there is time)
-* Stories (user could share his/her stories)
-* Convert into mobile web app
+## Possible features
+* Convert into React
 * voice messages
 * video calls
 * voice messages
+* Share files
 
 ## Technical
 * socket io: to handle realtime communication 
 * Mongodb : to store data
-* Express: handle backend stuff
+* Express: handle backend
 * Express-session: to handle user session
 * Dotenv: store keys
 * Bcrypt: Hash password
@@ -35,7 +31,7 @@ A user opens the web app to chat with his/her friends.
 * Users model
 * data model 
 * Text model
-* Room model(who and who)
+* Room model
 * ….
 
 ## Views
@@ -52,4 +48,3 @@ A user opens the web app to chat with his/her friends.
 * POST /home/signup
 * POST /home/signin
 * GET /home/show
-* ……
